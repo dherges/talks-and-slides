@@ -1,0 +1,13 @@
+{
+  "name": "ts-samples",
+  "version": "1.0.0",
+  "description": "typescript samples",
+  "private": "yes",
+  "devDependencies": {
+    "typescript": "^2.1.5"
+  },
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc"
+  }
+}

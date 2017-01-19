@@ -1,0 +1,1082 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>TypeScript &mdash; object-oriented functional programming</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <style>
+      .reveal,
+      .reveal p,
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4,
+      .reveal h5,
+      .reveal h6 {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      }
+
+      h1, h2 {
+        text-transform: uppercase;
+      }
+
+      h3, h4, h5, h6 {
+        text-transform: none;
+      }
+
+      strikethrough {
+        text-decoration: line-through;
+      }
+
+      p.small {
+        font-size: .6em;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="reveal">
+      <div class="slides">
+
+        <section>
+          <p><code style="font-size: 7rem; text-align: left;">Type?Script<br> :ES5<br> =2017;</code></p>
+        </section>
+
+        <section>
+          <h4>Use Case</h4>
+          <p>interactive human-machine-interfaces in a web browser</p>
+
+          <aside class="notes">
+            <p>Interaktive Anwendungen im Browser &rarr; JavaScript</p>
+          </aside>
+        </section>
+
+        <section>
+          <section>
+            <h4>Approach</h4>
+
+            <p>JavaScript plus classes, interfaces, types.</p>
+            <p>&larrpl;</p>
+          </section>
+
+          <section data-background-iframe="http://www.typescriptlang.org/">
+          </section>
+
+          <section data-background-iframe="https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js">
+            <h4>*Script</h4>
+
+            <small><a href="https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js">List of languages that compile to JS</a></small>
+          </section>
+
+          <section data-background-image="typescript/media/cats-maxresdefault.jpg">
+            <!--small><a href="https://i.ytimg.com/vi/GbpP3Sxp-1U/maxresdefault.jpg">https://i.ytimg.com/vi/GbpP3Sxp-1U/maxresdefault.jpg</a></small-->
+
+            <aside class="notes">
+              <p>Katzen Metapher: Löwe, Tiger, Jaguar, Panther ... alles Katzen, es gibt Gemeinsamkeiten, es gibt Unterschiede.</p>
+              <p>Die einen leben in Rudeln (z.B. Löwe), die anderen sind eher Einzelgänger.</p>
+              <p>Der schwarze Panther ist ein Leopard, dessen Fell wegen eines rezessiven Gens schwarzgefärbt ist (eine Form des Melanismus).</p>
+            </aside>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h4>Web Browsers in 2017</h4>
+            <p>hypothesis: the web is ECMAScript 5-compliant</p>
+            <p>&alpha; &lt; .03</p>
+
+            <aside class="notes">
+              <p>Wir reden meistens von "JavaScript". Was wir damit formal meinen ist i.d.R. ECMAScript 5.</p>
+              <p>Alpha (Fehler 1. Art) &rarr; "Ausschluss-Rate"</p>
+            </aside>
+          </section>
+
+          <section data-background="typescript/media/es5-browsers-usage-relative.png">
+            <small style="position: absolute; right: 0;"><a href="http://caniuse.com/#search=es5">http://caniuse.com/#search=es5</a><br>as of: 2017/01/12</small>
+          </section>
+
+          <section data-background="typescript/media/es5-browsers-versions.png">
+            <small style="position: absolute; right: 0;"><a href="http://caniuse.com/#search=es5">http://caniuse.com/#search=es5</a><br>as of: 2017/01/12</small>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h4><strikethrough>Best</strikethrough> Practice</h4>
+            <p>tsc: (src: TypeScript) &rarr; ECMAScript 5</p>
+
+            <aside class="notes">
+              <p>Was brauchen wir für unseren Use Case?</p>
+              <p>Eine Transformation von TypeScript-Source in ein Format, das Web Browser verstehen.</p>
+              <p>tsc, der TypeScript-Compiler, führt eine "Kompatibilitäts-Transformation" aus.</p>
+              <p>In der Praxis: TypeScript zur Laufzeit ist <em>syntatic sugar</em> für ES5. Nicht mehr. Nicht weniger.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Applied Academics</h4>
+            <p>tsc: (src: TypeScript, opts: tsconfig) &rarr; T &sub; TypeScript</p>
+
+<p><pre class="fragment" data-fragment-index="1"><code class="fragment" data-fragment-index="1" class="typescript" data-trim>{
+  "compilerOptions": {
+    "target": "es5"
+  }
+}</code></pre></p>
+            <small class="fragment" data-fragment-index="1"><a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html">tsconfig.json</a></small>
+
+            <p class="fragment" data-fragment-index="2">
+              &rArr; ECMAScript 5 &sub; ECMAScript 6 &sub; TypeScript
+              <br><small>(dependent on level of correctness, see <a href="https://github.com/Microsoft/TypeScript/issues/2606">TypeScript #2606</a>)</small>
+            </p>
+
+            <aside class="notes">
+              <ol>
+                <li>Jedes TS-Sprachkonstrukt ist durch ein äquivalentes Konstrukt in ES5 abbildbar (oder ES6 oder...).</li>
+                <li>Es gibt eine Identitäts-Transformation: "*.js" in "*.ts" umbenennen &rarr; gültiges TypeScript (vgl. f(x) = x)</li>
+                <li>level of correcness: "*.ts" kann nach "*.js" transformiert werden, dabei jedoch einen compile error aufweisen (Syntax vs. Semantik)</li>
+              </ol>
+              <p>Zeit für ein erstes Hello World Beispiel.</p>
+            </aside>
+          </section>
+        </section>
+
+        <section data-background-image="https://placekitten.com/1900/1200">
+        </section>
+
+        <section>
+          <section>
+            <h2>Types</h2>
+          </section>
+
+          <section>
+            <p>TypeScript's type checking is ...</p>
+            <ul>
+              <li>optional &#x2713;</li>
+              <li>static &#x2713;</li>
+              <li>dynamic (at run-time) &#x2717;</li>
+              <li>type-safe &#x2717;</li>
+              <li>nominal &#x2717;</li>
+              <li>structural &#x2713;</li>
+              <li>"duck typing" &#10048;</li>
+              <li>type inference &#x2713;</li>
+              <li>flow-sensitive typing &#x2713;</li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Optional Typing &#x2713;</h4>
+
+<p><pre><code class="typescript" data-trim>let foo: number = 4;
+let bar = 8;</code></pre></p>
+
+            <p class="fragment"><small>(explicit typing, implicit typing)</small></p>
+          </section>
+
+          <section>
+            <h4>Static Typing &#x2713;</h4>
+
+<p><pre><code class="typescript" data-trim>let foo: number = 4;
+let bar = 8;</code></pre></p>
+
+            <small>(transpiles to)</small>
+<p><pre><code class="typescript" data-trim>var foo = 4;
+var bar = 8;</code></pre></p>
+
+            <p class="fragment">&rArr; type information is checked at compile-time!</p>
+          </section>
+
+          <section>
+            <h4>Dynamic Typing &#x2717;</h4>
+
+<p><pre><code class="typescript" data-trim>let foo: number = 4;
+let bar = 8;</code></pre></p>
+
+            <small>(transpiles to)</small>
+<p><pre><code class="typescript" data-trim>var foo = 4;
+var bar = 8;</code></pre></p>
+
+            <p class="fragment">&rArr; type information is lost at run-time!</p>
+          </section>
+
+          <section>
+            <h4>Type-Safety &#x2717;</h4>
+
+<p><pre><code class="typescript" data-trim>
+let foo: string = 'hello world!';
+let bar = 8 * foo;</code></pre></p>
+
+            <small>(transpiles to)</small>
+<p><pre><code class="typescript" data-trim>var foo = 'hello world';
+var bar = 8 * foo;</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1">&rArr; compile error: TS2363: right-hand side of an arithmetic operation must be of type 'any', 'number' or an enum type.</p>
+            <p class="fragment" data-fragment-index="2">&rArr; run-time evaluation: <code>bar</code> is a <code>NaN</code> value (Not a Number)</p>
+
+            <aside class="notes">
+              <p>TypeScript is not type-safe.</p>
+              <p>*.ts can transform to valid *.js, and<br> still produce compile errors.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Type-Safety &#x2717;</h4>
+
+<p><pre><code class="typescript" data-trim>
+function foo(n: number): string {
+  return { foo: 'bar' }; // Error
+}
+foo(7);   // Ok
+foo('a'); // Error
+</code></pre></p>
+
+            <small>(transpiles to)</small>
+<p><pre><code class="typescript" data-trim>
+function foo(n) {
+  return { foo: 'bar' };
+}
+foo(7);   // returns '{ foo: 'bar' }'
+foo('a'); // returns '{ foo: 'bar' }'
+</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1">&rArr; Type '{ foo: string; }' is not assignable to type 'string'.</p>
+            <p class="fragment" data-fragment-index="1">&rArr; Argument of type '"n"' is not assignable to parameter of type 'number'.</p>
+
+            <aside class="notes">
+              <p>Though not type safe at run-time, TypeScript gives hints and warnings about incompatible types at compile-time.</p>
+              <p>Mehr als plain, typenloses JavaScript.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Nominal Typing &#x2717;</h4>
+
+<p><pre><code class="typescript" data-trim>
+interface Cat {
+  color: string;
+}
+
+// WATCH OUT: looks like nominal typing (Java, C#, etc.)
+class Tiger implements Cat {
+  roloc: string = '';
+}
+</code></pre></p>
+
+            <p class="fragment">&rArr; compile error: "Property 'color' is missing in type 'Tiger'."</p>
+
+            <aside class="notes">
+              <p>Typisierung ist möglich.</p>
+              <p>Es gibt Compiler und IDE Support für Typisierung.</p>
+              <p>Typisierung kann helfen, Bugs zu vermeiden.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Nominal Typing &#x2717;</h4>
+
+<p><pre><code class="typescript" data-trim>
+interface Cat {
+  color: string;
+}
+
+class Tiger implements Cat {
+  color: string = 'striped';
+}
+
+// WATCH OUT (!!!): this is no compile error in TypeScript
+let c: Tiger = { color: 'black' };
+</code></pre></p>
+
+            <p><small>Comparable code in Java: <code>Tiger t = (Tiger) new HashMap();</code></small></p>
+
+            <p class="fragment">&rArr; type checking is NOT enforced by name (class, interface)!</p>
+
+            <aside class="notes">
+              <p>Vergleichbar: <code>Tiger t = (Tiger) new Map&lt;String, String&gt;();</code></p>
+              <p>Compile Error in Java, C#, PHP(?), etc.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Structural Typing &#x2713;</h4>
+
+<p><pre><code class="typescript" data-trim>
+interface Cat {
+  color: string;
+}
+
+class Tiger {    // Although 'Tiger' does not implement 'Cat'
+  color: string; // 'Tiger' is kind of "a superset of" 'Cat'
+}
+
+let c: Cat;      // var 'c' is of type 'Cat'
+c = new Tiger(); // 'Tiger' is type-compatible with 'Cat'
+</code></pre></p>
+
+            <p><small>Comparable code in Java: <code>Cat c = (Cat) new Tiger();</code></small></p>
+
+            <p class="fragment" data-fragment-index="1">&rArr; OK, because of structural typing!</p>
+
+            <small class="fragment" data-fragment-index="1"><a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html">https://www.typescriptlang.org/docs/handbook/type-compatibility.html</a></small>
+
+            <aside class="notes">
+              <p>Vergleichbar: <code>Cat c = (Tiger) new Map&lt;String, String&gt;();</code></p>
+              <p>Compile Error in Java, C#, PHP(?), etc.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Structural Typing &#x2713;</h4>
+            <p><small>(think in set theory!)</small></p>
+
+            <p>&exist; t | properties(t) &supe; T</p>
+            <p>&rArr; typeof t &#8797; T</p>
+            <p><small>(semi-formal notation)</small></p>
+          </section>
+
+          <section>
+            <h4>Duck Typing &#10048;</h4>
+
+<p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
+interface Duck { name: string }
+let ducktale: any = { name: 'Dagobert', money: 123456789 };
+  // ↳ var 'ducktale' is an 'any' type
+
+function doDuckTest(input: any): Duck {
+  if (input && input.name && typeof input.name === 'string') {
+    return (input as Duck); // DANGER ZONE unchecked type-cast
+  }
+
+  throw new TypeError('Not a Duck: ' + input);
+}
+
+let dagobert = doDuckTest(ducktale);
+  // ↳ var 'dagobert' is a 'Duck' type - or TypeError is thrown</code></pre></p>
+
+            <p class="fragment" data-fragment-index="2">&rArr; <strikethrough>NOT</strikethrough> a TypeScript language feature</p>
+
+            <p class="fragment" data-fragment-index="2"><small><a href="http://wiki.ruby-portal.de/Duck_Typing">http://wiki.ruby-portal.de/Duck_Typing</a></small></p>
+            <p class="fragment" data-fragment-index="2"><small><a href="http://rubylearning.com/satishtalim/duck_typing.html">http://rubylearning.com/satishtalim/duck_typing.html</a></small></p>
+
+            <aside class="notes">
+              <p>Im <a href="http://www.typescriptlang.org/play/index.html">Playground</a> step-by-step zeigen!</p>
+              <p>Begriff "duck typing" wird im TS Handbook erwähnt, m.E. fehlt jedoch Reflection, um duck typing vollständig umsetzen zu können.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>What kind of type?</h4>
+
+            <blockquote style="color: #777;">
+              <p class="fragment">TypeScript’s structural type system was designed based on <em style="color: #fff;">how JavaScript code is typically written</em>.</p>
+              <p class="fragment">Because JavaScript widely uses <em style="color: #fff;">anonymous objects like function expressions and object literals</em>,
+                it’s much more natural to <em style="color: #fff;">represent relationships (..) with a structural type system</em> instead of a nominal one.</p>
+            </blockquote>
+
+            <small><a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html">Type Compatibility, TypeScript Handbook</a></small>
+          </section>
+
+          <section>
+            <h4>Type Inference &#x2713;</h4>
+
+<p><pre><code class="typescript" data-trim>
+let x = 3;       // inferred type: 'number'
+let foo = 'bar'; // inferred type: 'string'
+
+foo = x + 4;     // 'number' (plus) 'number', inferred type 'number'
+
+</code></pre></p>
+
+            <p class="fragment">&rArr; Type 'number' is not assignable to type 'string'.</p>
+          </section>
+
+          <section>
+            <h4>Flow-Sensitive Typing &#x2713;</h4>
+
+<p><pre><code class="typescript" data-trim>
+function foo(input) {
+  // A: 'input' can be an arbitrary type here
+  if (typeof input === 'string') {
+    // B: 'input' is supposed to be a 'String' type in this branch..
+    let another: string = input.concat(' - es ist ein String!');
+    // B: ..ends here
+  } else if (typeof input === 'number') {
+    // C: 'input' is supposed to be a 'Number' type in this branch..
+    let calc: number = 8 * input;
+    // C: ..ends here
+  }
+  // A: 'input' can be an arbitrary type here
+}
+</code></pre></p>
+
+            <aside class="notes">
+              <p>IDE Support im <a href="http://www.typescriptlang.org/play/index.html">Playground</a> zeigen!</p>
+              <p>Ziel: Compiler und IDE Support ermöglichen</p>
+            </aside>
+          </section>
+        </section>
+
+        <section data-background-image="https://placekitten.com/1920/1200">
+        </section>
+
+        <section>
+          <section>
+            <h2>Utility Stuff</h2>
+          </section>
+
+          <section>
+            <h4>for .. of, for .. in</h4>
+
+<p><pre><code class="typescript" data-trim>
+let list = [4, 5, 6];
+
+for (let key in list) {
+  console.log(key); // "0", "1", "2",
+}
+
+for (let value of list) {
+  console.log(value); // "4", "5", "6"
+}
+</code></pre></p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/iterators-and-generators.html">Iterators and Generators, Iterables</a></small></p>
+          </section>
+
+          <section>
+            <h4>optional and default parameters</h4>
+
+<p><pre><code class="typescript" data-trim>
+function foo(a: string, b: string = 'b', c?: string) {
+  console.log(a, b, c);
+}
+
+foo('1');           // outputs '1', 'b', undefined
+foo('1', 'a');      // outputs '1', 'a', undefined
+foo('1', 'a', '2'); // outputs '1', 'a', '2'
+</code></pre></p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/functions.html#optional-and-default-parameters">Functions, optional and default parameters</a></small></p>
+          </section>
+
+          <section>
+            <h4>object literal property value shorthand</h4>
+            <p>maps variable to property</p>
+
+<p><pre><code class="typescript" data-trim>
+let foo = 'a', bar = 7;
+
+let x = { foo: foo, bar: bar };
+let y = { foo, bar };
+
+console.log(x); // outputs { foo: 'a', bar: 7 }
+console.log(y); // outputs { foo: 'a', bar: 7 }
+</code></pre></p>
+
+            <p><small><a href="https://github.com/Microsoft/TypeScript/issues/418">TypeScript #418</a></small></p>
+          </section>
+
+          <section>
+            <h4>template strings</h4>
+            <p><small>a.k.a: string interpolation, multi-line strings</small></p>
+
+<p><pre><code class="typescript" data-trim>
+let foo = 'fighters';
+console.log(`Foo ${foo}.`); // 'Foo fighters'
+
+let html = `&lt;p&gt;
+&lt;marquee&gt;There goes my hero&lt;/marquee&gt;
+&lt;/p&gt;`;
+</code></pre></p>
+
+<iframe class="fragment" src="https://embed.spotify.com/?uri=spotify%3Atrack%3A5oCMnpuRd3rUL9clNWbjr0" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+          </section>
+
+          <section>
+            <h4>destructuring arrays</h4>
+
+<p><pre><code class="typescript" data-trim>
+let input = [1, 2, 3, 4];
+let [first, second, ...others] = input;
+console.log(first);  // outputs 1
+console.log(second); // outputs 2
+console.log(others); // outputs [3, 4]
+</code></pre></p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html#destructuring">Variable Declarations, Destructuring</a></small></p>
+          </section>
+
+          <section>
+            <h4>destructuring objects</h4>
+
+<p><pre><code class="typescript" data-trim>
+let o = {
+  a: "foo",
+  b: 12,
+  c: "bar"
+}
+let { a, b } = o;
+console.log(a); // outputs 'foo'
+console.log(b); // outputs 12
+</code></pre></p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html#destructuring">Variable Declarations, Destructuring</a></small></p>
+          </section>
+        </section>
+
+        <section data-background-image="https://placekitten.com/1980/1200">
+        </section>
+
+        <section>
+          <section>
+            <h2>Object-oriented programming</h2>
+          </section>
+
+          <section>
+            <p>(Classes, Interfaces) &rarr; Prototypes</p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/classes.html">Classes</a></small><br>
+            <small><a href="https://www.typescriptlang.org/docs/handbook/interfaces.html">Interfaces</a></small></p>
+          </section>
+
+          <section>
+            <h4>Classes</h4>
+
+<p><pre><code class="typescript" data-trim>
+class Tiger {
+  color: string = 'striped';       // &lt;-- property (member variable)
+  private prey: any; // (prey bedeutet "Beute")
+
+  public hunt(what: any): void {   // &lt;-- function (method)
+    this.prey = what;
+  }
+}
+</code></pre></p>
+<p class="fragment" data-fragment-index="1"><small>(transpiles to)</small></p>
+<p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
+var Tiger = (function () {
+  function Tiger() {                        // &lt;-- constructor func.
+    this.color = 'striped';
+  }
+  Tiger.prototype.hunt = function (what) {  // &lt;-- prototype
+    this.prey = what;
+  };
+  return Tiger;
+}()); // &lt;-- iife (immediately invoked function expression)
+</code></pre></p>
+
+            <aside class="notes">
+              <p>properties wie members, functions wie methoden</p>
+              <p>access modifier: public, private, protected - public by default</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Classes</h4>
+
+<p><pre><code class="typescript" data-trim>
+class Tiger {
+  /* .. */
+}
+
+let t = new Tiger();
+t.hunt('bird');
+
+console.log(t); // --&gt; Tiger { color: 'striped', prey: 'bird'}
+
+
+let isTiger: boolean = t instanceof Tiger;
+console.log(isTigger); // true
+</code></pre></p>
+
+            <aside class="notes">
+              <p>new: führt die constructor function aus und kopiert den prototype</p>
+              <p>instanceof: vergleich der constructor function</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Classes</h4>
+            <p>access modifiers</p>
+
+<p><pre><code class="typescript" data-trim>
+class Tiger {
+  color: string;       // &lt;-- public by default
+  public name: string;
+  protected countries: string[];
+  private prey: any;
+}
+</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1">&rArr; compile error: property 'prey' is private and only accessible within class 'Tiger'.</p>
+            <p class="fragment" data-fragment-index="1"><small>(access is not checked at run-time!)</small></p>
+          </section>
+
+          <section>
+            <h4>Classes</h4>
+            <p>constructor parameters / properties</p>
+
+<p><pre><code class="typescript" data-trim>
+class Tiger {
+  public color: string = 'striped';
+
+  constructor(color: string) {
+    this.color = color;
+  }
+}
+</code></pre></p>
+<p class="fragment" data-fragment-index="1"><small>(shorthand version)</small></p>
+<p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
+class Tiger {
+
+  constructor(public color: string) {}
+}
+</code></pre></p>
+
+          </section>
+
+          <section>
+            <h4>Classes</h4>
+            <p>get / set accessors</p>
+
+<p><pre><code class="typescript" data-trim>
+class Tiger {
+  private _myName: string;
+
+  get name(): string {
+    return `I am ${this._myName}, a Tiger.`; // string interpolation
+  }
+
+  set name(val: string) {
+    this._myName = val;
+  }
+}
+
+let t = new Tiger();
+t.name = 'Shere Khan'; // property access
+console.log(t.name);   // 'I am Shere Khan, a Tiger.'
+</code></pre></p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/classes.html#accessors">Classes, Accessors</a></small></p>
+          </section>
+
+          <section>
+            <h4>Classes</h4>
+            <p>surplus: abstract classes, statics</p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/classes.html#abstract-classes">Classes, Abstract classes</a></small>
+            <br><small><a href="https://www.typescriptlang.org/docs/handbook/classes.html#static-properties">Classes, Static Properties</a></small></p>
+
+            <p><small>(self-study)</small></p>
+          </section>
+
+          <section>
+            <h4>Interfaces</h4>
+
+<p><pre><code class="typescript" data-trim>
+interface Cat {
+  color: string;
+
+  meeow(): void;
+}
+</code></pre></p>
+<p><small>(transpiles to)</small></p>
+<p><pre><code class="typescript">
+</code></pre></p>
+          </section>
+
+            <aside class="notes">
+              <p>Lernziel: run-time representation eines Interface nicht weiter von Bedeutung. Interfaces dienen als "Typ-Hinweise" für den Compiler.</p>
+            </aside>
+          <section>
+            <h4>Interfaces</h4>
+
+<p><pre><code class="typescript" data-trim>
+interface Cat {
+  color: string;
+
+  meeow(): void;
+
+  bite(human: Human): never;
+}
+</code></pre></p>
+<p class="fragment" data-fragment-index="1"><small>(equivalent to)</small></p>
+<p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
+interface Cat {
+  color: string;
+
+  meeow: () => void;
+
+  bite: (someone: Human) => never;
+}
+</code></pre></p>
+
+            <aside class="notes">
+              <p>never: spezieller datentyp. soll andeuten, dass methode "niemals" einen wert zurückliefert, d.h. immer eine exception wirft.</p>
+              <p>Lernziel: call signature, vgl. <code>var abc = function()</code> vs. <code>function abc() {}</code></p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Generics</h4>
+
+<p><pre><code class="typescript" data-trim>
+interface Observer&lt;T&gt; {
+  next: (value: T) => void;
+  error: (err: any) => void;
+  complete: () => void;
+}
+
+class Observable&lt;T&gt; {
+  subscribe(observer: Observer&lt;T&gt;): Subscription     { /* .. */ }
+  map&lt;R&gt;(project: (value: T) => R): Observable&lt;R&gt;    { /* .. */ }
+}
+</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1">&rArr; exactly the same in Java, C#. et al.: generic data type hints at compile-time, no run-time impact</p>
+            <p class="fragment" data-fragment-index="1"><small><a href="https://www.typescriptlang.org/docs/handbook/generics.html">Generics</a></small></p>
+
+            <aside class="notes">
+              <p>Lernziel: generic data types nutzen wie gewohnt in Java und C#</p>
+              <p>Zur Laufzeit: generic type information is lost.</p>
+            </aside>
+
+          </section>
+
+          <section>
+            <h4>Decorators</h4>
+
+<p><pre><code class="typescript" data-trim>
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "experimentalDecorators": true
+  }
+}
+</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1">&rArr; must be enabled explicitly!</p>
+            <p class="fragment" data-fragment-index="1"><small>(subjective comment: it's a fairly battle-tested experimental feature)</small></p>
+            <p class="fragment" data-fragment-index="1"><small><a href="https://www.typescriptlang.org/docs/handbook/decorators.html">Decorators</a></small></p>
+          </section>
+
+          <section>
+            <h4>Decorators</h4>
+
+<p><pre><code class="typescript" data-trim>
+function Component(ctor: Function) {
+  function decoratedCtor () {
+    /* .. */
+  }
+
+  return decoratedCtor;  // &lt;-- implement it as 'decorator pattern'
+}
+
+@Component               // &lt;-- use it like 'annotation pattern'
+class MyComponent {
+}
+</code></pre></p>
+          </section>
+
+          <section>
+            <h4>Decorators</h4>
+
+<p><pre><code class="typescript" data-trim>
+function Component(metadata: any) {  // &lt;-- decorator factory
+
+  return function (ctor: Function) {
+    function decoratedCtor () {
+      /* .. */
+    }
+
+    return decoratedCtor;
+  }
+}
+
+@Component({ /* values here */ })    // &lt;-- decorator metadata
+class MyComponent {
+}
+</code></pre></p>
+          </section>
+
+          <section>
+            <h4>Decorators</h4>
+            <ul>
+              <li>Parameter</li>
+              <li>Method</li>
+              <li>Accessor</li>
+              <li>Property</li>
+              <li>Class</li>
+            </ul>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/decorators.html">Decorators</a></small></p>
+            <p><small>(more self-study recommended)</small></p>
+          </section>
+
+        </section>
+
+        <section data-background-image="https://placekitten.com/1940/1410">
+        </section>
+
+        <section>
+          <section>
+            <h2>Modules, Namespaces</h2>
+          </section>
+
+          <section>
+            <h4>import, export</h4>
+          </section>
+
+          <section>
+            <h4>namespace</h4>
+          </section>
+        </section>
+
+        <section data-background-image="https://placekitten.com/g/1900/1280">
+        </section>
+
+        <section>
+          <section>
+            <h2>Functional programming</h2>
+          </section>
+
+          <section>
+            <h4>arrow functions</h4>
+            <p>this</p>
+          </section>
+
+          <section>
+            <h4>var, let, const</h4>
+
+            <small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html">https://www.typescriptlang.org/docs/handbook/variable-declarations.html</a></small>
+          </section>
+        </section>
+
+
+        <section>
+          <blockquote>
+            <span>"I was under marketing orders</span><br>
+            <span>to make it look like Java</span><br>
+            <span>but not make it too big for its britches."</span>
+          </blockquote>
+
+          <p><small>&mdash; Brendan Eich, 
+            <a href="http://doi.ieeecomputersociety.org/10.1109/MC.2012.57">JavaScript: Designing a Language in 10 Days</a>
+          </small></p>
+        </section>
+
+        <section>
+          <h2>Appendix</h2>
+        </section>
+
+        <section>
+          <section>
+            <h4>ES 5 building blocks</h4>
+            <p>functional</p>
+
+            <p><code>
+<pre>function foo() { /* .. */ }
+
+var foo = function () { /* .. */ }</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <h4>ES 5 building blocks</h4>
+            <p>functional</p>
+
+            <p><code>
+<pre>function f(x, y) { return x * y; }
+
+function g(x) {
+  return function (y) { return x * y; }
+}
+
+
+f(3, 2);  // 6
+g(3);     // function (y) { return 3 * y; }
+g(3)(2);  // 6</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <h4>ES 5 building blocks</h4>
+            <p>object-oriented</p>
+
+            <p><code>
+<pre>var Foo = function () { this.x = 3; }
+
+new Foo(); // Foo { x: 3 }</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <h4>ES 5 building blocks</h4>
+            <p>prototype-based</p>
+
+            <p><code>
+<pre>var Foo = function () { this.x = 3; }
+Foo.prototype.multiply = function (y) { return this.x * y; }
+
+var foo = new Foo();
+foo.multiply     // function (y) { /* .. */ }
+foo.multiply(2); // 6
+
+foo.x = 4;
+foo.multiply(2); // 8</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <h4>ES 5 building blocks</h4>
+            <p>interrupts</p>
+
+            <p><code>
+<pre>try {
+  throw 'hello'
+} catch (e) {
+  console.log(e); // 'hello'
+}</pre>
+            </code></p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h4>More ES 5</h4>
+            <h6>for your self-study</h6>
+          </section>
+
+          <section>
+            <p><code>
+<pre>var foo = function ()   { return 3; }
+var bar = function (cb) { return cb(); }
+
+foo();      // 3
+bar(foo);   // 3
+bar(foo()); // TypeError: cb is not a function</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <p><code>
+<pre>function f(x, y) { return x * y; }
+
+function g(x) {
+  return function (y) { return x * y; }
+}
+
+
+f(3, 2);  // 6
+g(3);     // function (y) { return 3 * y; }
+g(3)(2);  // 6</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <p><code>
+<pre>var foo = function (x) { return x; }
+
+foo(3);       // 3
+foo(foo(3));  // 3
+foo(foo)(3);  // 3
+foo(3, 4, 5); // 3
+foo(3+ 4* 5); // 23
+foo();        // undefined
+foo('7')      // '7'
+foo([9, 8, 7], 6);  // [9, 8, 7]
+foo([9, 8, 7]+ 6);  // "9, 8, 76"
+foo([9, 8, 7]- 6);  // NaN (not a number)
+</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <p><code>
+<pre>var Foo = function () { this.x = 3; }
+
+var foo = new Foo();  // Foo { x: 3 }</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <p><code>
+<pre>var Foo = function () { this.x = 3; }
+Foo.prototype.multiply = function (y) { return this.x * y; }
+
+var foo = new Foo();
+foo.multiply     // function (y) { /* .. */ }
+foo.multiply(2); // 6
+foo.multiply = 'hello';
+foo.multiply;    // 'hello'
+foo.multiply(2); // TypeError: foo.multiply is not a function</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <p><code>
+<pre>var Foo = function (x) { this.x = x; }
+Foo.prototype.identity = function () {
+  return this.x ;
+}
+
+var bar = function (cb) { return cb(); }
+
+var foo = new Foo(3);      // Foo { x: 3 }
+foo.identity();            // 3
+bar(foo.identity);         // undefined
+
+bar(function () { return foo.identity(); })   // 3
+</pre>
+            </code></p>
+          </section>
+
+          <section>
+            <p><code>
+<pre>try {
+  throw 'hello'
+} catch (e) {
+  console.log(e); // 'hello'
+}</pre>
+            </code></p>
+          </section>
+        </section>
+
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
