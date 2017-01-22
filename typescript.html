@@ -542,11 +542,18 @@ console.log(b); // outputs 12
           </section>
 
           <section>
-            <h4>safe access navigation</h4>
-          
-      TODO:
-      the missing feature: safe?.access?.navigator: https://github.com/Microsoft/TypeScript/issues/16
+            <h4>safe navigation navigation</h4>
+            <p><small>a.k.a. Elvis Operator</small></p>
 
+<p><pre><code class="typescript" data-trim>
+let foo = { bar: { baz: '7' } };
+
+let bar = foo?.bar?.kaabow;
+</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1" style="color: orangered;">NOT SUPPORTED in TypeScript!</p>
+
+            <p class="fragment" data-fragment-index="1"><small><a href="https://github.com/Microsoft/TypeScript/issues/16">TypeScript #16</a></small></p>
           </section>
 
         </section>
@@ -571,7 +578,7 @@ console.log(b); // outputs 12
 
 <p><pre><code class="typescript" data-trim>
 class Tiger {
-  color: string = 'striped';       // &lt;-- property (member variable)
+  color: string = 'striped';       // &lt;-- property (member)
   private prey: any; // (prey bedeutet "Beute")
 
   public hunt(what: any): void {   // &lt;-- function (method)
@@ -582,10 +589,10 @@ class Tiger {
 <p class="fragment" data-fragment-index="1"><small>(transpiles to)</small></p>
 <p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
 var Tiger = (function () {
-  function Tiger() {                        // &lt;-- constructor func.
+  function Tiger() { // &lt;-- constructor function
     this.color = 'striped';
   }
-  Tiger.prototype.hunt = function (what) {  // &lt;-- prototype
+  Tiger.prototype.hunt = function (what) { // &lt;-- prototype
     this.prey = what;
   };
   return Tiger;
@@ -628,7 +635,7 @@ console.log(isTigger); // true
 
 <p><pre><code class="typescript" data-trim>
 class Tiger {
-  color: string;       // &lt;-- public by default
+  color: string; // &lt;-- public by default
   public name: string;
   protected countries: string[];
   private prey: any;
@@ -671,7 +678,7 @@ class Tiger {
   private _myName: string;
 
   get name(): string {
-    return `I am ${this._myName}, a Tiger.`; // string interpolation
+    return `I am ${this._myName}, a Tiger.`; // templ. string
   }
 
   set name(val: string) {
@@ -680,8 +687,8 @@ class Tiger {
 }
 
 let t = new Tiger();
-t.name = 'Shere Khan'; // property access
-console.log(t.name);   // 'I am Shere Khan, a Tiger.'
+t.name = 'Shere Khan'; // write
+console.log(t.name);   // read: 'I am Shere Khan, a Tiger.'
 </code></pre></p>
 
             <p><small><a href="https://www.typescriptlang.org/docs/handbook/classes.html#accessors">Classes, Accessors</a></small></p>
@@ -724,7 +731,7 @@ interface Cat {
 
   meeow(): void;
 
-  bite(human: Human): never;
+  bite(someone: Human): never;
 }
 </code></pre></p>
 <p class="fragment" data-fragment-index="1"><small>(equivalent to)</small></p>
@@ -755,8 +762,8 @@ interface Observer&lt;T&gt; {
 }
 
 class Observable&lt;T&gt; {
-  subscribe(observer: Observer&lt;T&gt;): Subscription     { /* .. */ }
-  map&lt;R&gt;(project: (value: T) => R): Observable&lt;R&gt;    { /* .. */ }
+  subscribe(observer: Observer&lt;T&gt;): Subscription  { /* .. */ }
+  map&lt;R&gt;(project: (value: T) => R): Observable&lt;R&gt; { /* .. */ }
 }
 </code></pre></p>
 
@@ -796,10 +803,10 @@ function Component(ctor: Function) {
     /* .. */
   }
 
-  return decoratedCtor;  // &lt;-- implement it as 'decorator pattern'
+  return decoratedCtor; // &lt;-- implement as 'decorator'
 }
 
-@Component               // &lt;-- use it like 'annotation pattern'
+@Component              // &lt;-- use like 'annotation'
 class MyComponent {
 }
 </code></pre></p>
@@ -809,7 +816,7 @@ class MyComponent {
             <h4>Decorators</h4>
 
 <p><pre><code class="typescript" data-trim>
-function Component(metadata: any) {  // &lt;-- decorator factory
+function Component(metadata: any) { // &lt;-- decorator factory
 
   return function (ctor: Function) {
     function decoratedCtor () {
@@ -820,7 +827,7 @@ function Component(metadata: any) {  // &lt;-- decorator factory
   }
 }
 
-@Component({ /* values here */ })    // &lt;-- decorator metadata
+@Component({ /* values here */ })   // &lt;-- decorator metadata
 class MyComponent {
 }
 </code></pre></p>
