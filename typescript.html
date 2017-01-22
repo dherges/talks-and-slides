@@ -168,20 +168,20 @@
           <section>
             <p>TypeScript's type checking is ...</p>
             <ul>
-              <li>optional &#x2713;</li>
-              <li>static &#x2713;</li>
-              <li>dynamic (at run-time) &#x2717;</li>
-              <li>type-safe &#x2717;</li>
-              <li>nominal &#x2717;</li>
-              <li>structural &#x2713;</li>
-              <li>"duck typing" &#10048;</li>
-              <li>type inference &#x2713;</li>
-              <li>flow-sensitive typing &#x2713;</li>
+              <li>optional <span style="color: limegreen;">&#x2713;</span></li>
+              <li>static <span style="color: limegreen;">&#x2713;</span></li>
+              <li>dynamic (at run-time) <span style="color: orangered;">&#x2717;</span></li>
+              <li>type-safe <span style="color: orangered;">&#x2717;</span></li>
+              <li>nominal <span style="color: orangered;">&#x2717;</span></li>
+              <li>structural <span style="color: limegreen;">&#x2713;</span></li>
+              <li>"duck typing" <span style="color: darkviolet;">&#10048;</span></li>
+              <li>type inference <span style="color: limegreen;">&#x2713;</span></li>
+              <li>flow-sensitive <span style="color: limegreen;">&#x2713;</span></li>
             </ul>
           </section>
 
           <section>
-            <h4>Optional Typing &#x2713;</h4>
+            <h4>Optional Typing <span style="color: limegreen;">&#x2713;</span></h4>
 
 <p><pre><code class="typescript" data-trim>let foo: number = 4;
 let bar = 8;</code></pre></p>
@@ -190,7 +190,7 @@ let bar = 8;</code></pre></p>
           </section>
 
           <section>
-            <h4>Static Typing &#x2713;</h4>
+            <h4>Static Typing <span style="color: limegreen;">&#x2713;</span></h4>
 
 <p><pre><code class="typescript" data-trim>let foo: number = 4;
 let bar = 8;</code></pre></p>
@@ -203,7 +203,7 @@ var bar = 8;</code></pre></p>
           </section>
 
           <section>
-            <h4>Dynamic Typing &#x2717;</h4>
+            <h4>Dynamic Typing <span style="color: orangered;">&#x2717;</span></h4>
 
 <p><pre><code class="typescript" data-trim>let foo: number = 4;
 let bar = 8;</code></pre></p>
@@ -216,7 +216,7 @@ var bar = 8;</code></pre></p>
           </section>
 
           <section>
-            <h4>Type-Safety &#x2717;</h4>
+            <h4>Type-Safety <span style="color: orangered;">&#x2717;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 let foo: string = 'hello world!';
@@ -236,7 +236,7 @@ var bar = 8 * foo;</code></pre></p>
           </section>
 
           <section>
-            <h4>Type-Safety &#x2717;</h4>
+            <h4>Type-Safety <span style="color: orangered;">&#x2717;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 function foo(n: number): string {
@@ -265,7 +265,7 @@ foo('a'); // returns '{ foo: 'bar' }'
           </section>
 
           <section>
-            <h4>Nominal Typing &#x2717;</h4>
+            <h4>Nominal Typing <span style="color: orangered;">&#x2717;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 interface Cat {
@@ -288,7 +288,7 @@ class Tiger implements Cat {
           </section>
 
           <section>
-            <h4>Nominal Typing &#x2717;</h4>
+            <h4>Nominal Typing <span style="color: orangered;">&#x2717;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 interface Cat {
@@ -314,7 +314,7 @@ let c: Tiger = { color: 'black' };
           </section>
 
           <section>
-            <h4>Structural Typing &#x2713;</h4>
+            <h4>Structural Typing <span style="color: limegreen;">&#x2713;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 interface Cat {
@@ -342,16 +342,16 @@ c = new Tiger(); // 'Tiger' is type-compatible with 'Cat'
           </section>
 
           <section>
-            <h4>Structural Typing &#x2713;</h4>
+            <h4>Structural Typing <span style="color: limegreen;">&#x2713;</span></h4>
             <p><small>(think in set theory!)</small></p>
 
-            <p>&exist; t | properties(t) &supe; T</p>
-            <p>&rArr; typeof t &#8797; T</p>
-            <p><small>(semi-formal notation)</small></p>
+            <p class="fragment" data-fragment-index="1">&exist; t | properties(t) &supe; T</p>
+            <p class="fragment" data-fragment-index="2">&rArr; typeof t &#8797; T</p>
+            <p class="fragment" data-fragment-index="2"><small>(semi-formal notation)</small></p>
           </section>
 
           <section>
-            <h4>Duck Typing &#10048;</h4>
+            <h4>Duck Typing <span style="color: darkviolet;">&#10048;</span></h4>
 
 <p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
 interface Duck { name: string }
@@ -367,12 +367,15 @@ function doDuckTest(input: any): Duck {
 }
 
 let dagobert = doDuckTest(ducktale);
-  // ↳ var 'dagobert' is a 'Duck' type - or TypeError is thrown</code></pre></p>
+  // ↳ var 'dagobert' is a 'Duck' type - or TypeError thrown</code></pre></p>
 
             <p class="fragment" data-fragment-index="2">&rArr; <strikethrough>NOT</strikethrough> a TypeScript language feature</p>
 
-            <p class="fragment" data-fragment-index="2"><small><a href="http://wiki.ruby-portal.de/Duck_Typing">http://wiki.ruby-portal.de/Duck_Typing</a></small></p>
-            <p class="fragment" data-fragment-index="2"><small><a href="http://rubylearning.com/satishtalim/duck_typing.html">http://rubylearning.com/satishtalim/duck_typing.html</a></small></p>
+            <p class="fragment" data-fragment-index="2">
+              <small><a href="http://wiki.ruby-portal.de/Duck_Typing">http://wiki.ruby-portal.de/Duck_Typing</a></small>
+              <br>
+              <small><a href="http://rubylearning.com/satishtalim/duck_typing.html">http://rubylearning.com/satishtalim/duck_typing.html</a></small>
+            </p>
 
             <aside class="notes">
               <p>Im <a href="http://www.typescriptlang.org/play/index.html">Playground</a> step-by-step zeigen!</p>
@@ -381,7 +384,7 @@ let dagobert = doDuckTest(ducktale);
           </section>
 
           <section>
-            <h4>What kind of type?</h4>
+            <h4>What kind of type?!?</h4>
 
             <blockquote style="color: #777;">
               <p class="fragment">TypeScript’s structural type system was designed based on <em style="color: #fff;">how JavaScript code is typically written</em>.</p>
@@ -393,13 +396,13 @@ let dagobert = doDuckTest(ducktale);
           </section>
 
           <section>
-            <h4>Type Inference &#x2713;</h4>
+            <h4>Type Inference <span style="color: limegreen;">&#x2713;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 let x = 3;       // inferred type: 'number'
 let foo = 'bar'; // inferred type: 'string'
 
-foo = x + 4;     // 'number' (plus) 'number', inferred type 'number'
+foo = x + 4;     // 'number' (+) 'number' -> inferred 'number'
 
 </code></pre></p>
 
@@ -407,7 +410,7 @@ foo = x + 4;     // 'number' (plus) 'number', inferred type 'number'
           </section>
 
           <section>
-            <h4>Flow-Sensitive Typing &#x2713;</h4>
+            <h4>Flow-Sensitive Typing <span style="color: limegreen;">&#x2713;</span></h4>
 
 <p><pre><code class="typescript" data-trim>
 function foo(input) {
@@ -853,6 +856,8 @@ class MyComponent {
         <section>
           <section>
             <h2>Functional programming</h2>
+
+            <p>http://slides.com/gsklee/functional-programming-in-5-minutes, G. Kay Lee </a>
           </section>
 
           <section>
