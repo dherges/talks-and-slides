@@ -206,6 +206,74 @@
           </section>
 
           <section>
+            <h4>var, let, const</h4>
+
+            <small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html">Variable Declarations</a></small>
+          </section>
+
+          <section>
+            <h4>var</h4>
+
+<p><pre><code class="typescript" data-trim>
+var foo = 7;
+function () {
+  var foo = 'bar';
+}
+</code></pre></p>
+
+            <p>how many variables?</p>
+            <p class="fragment">2</p>
+          </section>
+
+          <section>
+            <h4>var</h4>
+
+<p><pre><code class="typescript" data-trim>
+var foo = 7;
+function () {
+  if (/* .. */) {
+    var foo = 'bar';
+  } else {
+    var foo = new Foo();
+  }
+}
+</code></pre></p>
+
+            <p>how many variables?</p>
+            <p class="fragment">in code: 3 &mdash; at run-time: 2</p>
+          </section>
+
+          <section>
+            <h4>let</h4>
+
+<p><pre><code class="typescript" data-trim>
+let foo = 7;
+function () {
+  if (/* .. */) {
+    let foo = 'bar';
+  } else {
+    let foo = new Foo();
+  }
+}
+</code></pre></p>
+
+            <p>how many variables?</p>
+            <p class="fragment">in code: 3 &mdash; at run-time: 3</p>
+          </section>
+
+          <section>
+            <h4>const</h4>
+
+<p><pre><code class="typescript" data-trim>
+const foo = 7;
+foo = 8; // Cannot assign to 'foo' because it is a constant.
+</code></pre></p>
+
+            <p>how many constants?</p>
+            <p class="fragment">in code: 1 &mdash; at run-time: 0</p>
+          </section>
+
+          <section>
             <h4>Arrow Functions</h4>
             <p><small>a.k.a lambda expressions</small></p>
 
@@ -283,73 +351,6 @@ subscribe: (
             </aside>
           </section>
 
-          <section>
-            <h4>var, let, const</h4>
-
-            <small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html">Variable Declarations</a></small>
-          </section>
-
-          <section>
-            <h4>var</h4>
-
-<p><pre><code class="typescript" data-trim>
-var foo = 7;
-function () {
-  var foo = 'bar';
-}
-</code></pre></p>
-
-            <p>how many variables?</p>
-            <p class="fragment">2</p>
-          </section>
-
-          <section>
-            <h4>var</h4>
-
-<p><pre><code class="typescript" data-trim>
-var foo = 7;
-function () {
-  if (/* .. */) {
-    var foo = 'bar';
-  } else {
-    var foo = new Foo();
-  }
-}
-</code></pre></p>
-
-            <p>how many variables?</p>
-            <p class="fragment">in code: 3 &mdash; at run-time: 2</p>
-          </section>
-
-          <section>
-            <h4>let</h4>
-
-<p><pre><code class="typescript" data-trim>
-let foo = 7;
-function () {
-  if (/* .. */) {
-    let foo = 'bar';
-  } else {
-    let foo = new Foo();
-  }
-}
-</code></pre></p>
-
-            <p>how many variables?</p>
-            <p class="fragment">in code: 3 &mdash; at run-time: 3</p>
-          </section>
-
-          <section>
-            <h4>const</h4>
-
-<p><pre><code class="typescript" data-trim>
-const foo = 7;
-foo = 8; // Cannot assign to 'foo' because it is a constant.
-</code></pre></p>
-
-            <p>how many constants?</p>
-            <p class="fragment">in code: 1 &mdash; at run-time: 0</p>
-          </section>
         </section>
 
         <section data-background-image="https://placekitten.com/1900/1200">
