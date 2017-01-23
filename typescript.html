@@ -1055,10 +1055,90 @@ class MyComponent {
 
           <section>
             <h4>import, export</h4>
+
+<p><pre><code class="typescript" data-trim>
+export class Foo {}
+</code></pre></p>
+<p><small>foo.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+import { Foo } from './foo';
+let foo = new Foo();
+</code></pre></p>
+<p><small>bar.ts</small></p>
+
+            <aside class="notes">
+              <p>Ein Modul pro *.ts Datei</p>
+              <p>export, import: um Abhängigkeiten zwischen Modulen zu deklarieren</p>
+              <p>Relative Pfadangaben mit './' oder '../'</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>import, export</h4>
+
+<p><pre><code class="typescript" data-trim>
+export class Foo {}
+</code></pre></p>
+<p><small>foo/foo-internal.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+export * from './foo-internal';
+</code></pre></p>
+<p><small>foo/index.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+import { Foo } from './foo';
+let foo = new Foo();
+</code></pre></p>
+<p><small>bar.ts</small></p>
+
+            <aside class="notes">
+              <p>'index.ts' exportiert ein Verzeichnis als Modul</p>
+              <p>wird auch genannt: "barrel" (Angular community)</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>import (legacy code)</h4>
+
+<p><pre><code class="typescript" data-trim>
+import 'ie-shim';
+</code></pre></p>
+<p><small>polyfills.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+import * as moment from 'moment';
+
+moment.now();
+</code></pre></p>
+<p><small>time.ts</small></p>
+
+            <aside class="notes">
+              <p>Absolute Pfadangabe: löst an Hang "moduleResolution" des ts compilers auf, i.d.R. aus "node_modules" Verzeichnis</p>
+              <p><code>import 'lib'</code>: library "all-in"</p>
+              <p><code>import * as</code>: Syntax häufig für variable-scoped libraries (z.B. auch <code>$</code>)</p>
+            </aside>
           </section>
 
           <section>
             <h4>namespace</h4>
+
+<p><pre><code class="typescript" data-trim>
+declare namespace moment {
+  export function now(): number;
+}
+
+export = moment;
+</code></pre></p>
+<p><small>moment.d.ts</small></p>
+
+            <!--p class="fragment">&rArr; an object literal grouping common stuff together</p-->
+            <aside class="notes">
+              <p>object literal + iife = namespace</p>
+              <p>namespaces meistens für declaration files von legacy code</p>
+              <p>deklarieren einer "globalen" variable, die die library repräsentiert (z.B. auch <code>$</code>)</p>
+            </aside>
           </section>
         </section>
 
