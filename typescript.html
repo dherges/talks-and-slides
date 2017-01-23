@@ -131,7 +131,7 @@
           </section>
 
           <section>
-            <h4>Applied Academics</h4>
+            <h4>Compiler Advanced</h4>
             <p>tsc: (src: TypeScript, opts: tsconfig) &rarr; T &sub; TypeScript</p>
 
 <p><pre class="fragment" data-fragment-index="1"><code class="fragment" data-fragment-index="1" class="typescript" data-trim>{
@@ -153,6 +153,31 @@
                 <li>level of correcness: "*.ts" kann nach "*.js" transformiert werden, dabei jedoch einen compile error aufweisen (Syntax vs. Semantik)</li>
               </ol>
               <p>Zeit für ein erstes Hello World Beispiel.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Compiler Advanced (pt. 2)</h4>
+
+<p><pre><code class="typescript" data-trim>
+{
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": true, // creates *.d.ts files
+    "sourceMap": true,   // creates *.map files
+    "module": "commonjs",
+    "moduleResolution": "node"
+  }
+}
+</code></pre></p>
+
+            <p>
+              <small class="fragment">Source Maps: <code>*.map</code> files allow for debugging in <code>*.ts</code> sources</small><br>
+              <small class="fragment">Declaration Files: <code>*.d.ts</code> supplements metadata for (legacy) <code>*.js</code></small><br>
+              <small class="fragment"><code>@types/&lt;library&gt;</code>: <a href="https://github.com/DefinitelyTyped/DefinitelyTyped">DefinitelyTyped</a> is a popular mono repository for declaration files</small>
+            </p>
+
+            <aside class="notes">
             </aside>
           </section>
         </section>
@@ -586,11 +611,11 @@ foo = x + 4;     // 'number' (+) 'number' -> inferred 'number'
 function foo(input) {
   // A: 'input' can be an arbitrary type here
   if (typeof input === 'string') {
-    // B: 'input' is supposed to be a 'String' type in this branch..
-    let another: string = input.concat(' - es ist ein String!');
+    // B: 'input' is supposed to be a 'String' type, begins..
+    let another: string = input.concat(' - ist ein String!');
     // B: ..ends here
   } else if (typeof input === 'number') {
-    // C: 'input' is supposed to be a 'Number' type in this branch..
+    // C: 'input' is supposed to be a 'Number' type, begins..
     let calc: number = 8 * input;
     // C: ..ends here
   }
@@ -614,6 +639,38 @@ function foo(input) {
           </section>
 
           <section>
+            <h4>optional and default parameters</h4>
+
+<p><pre><code class="typescript" data-trim>
+function foo(a: string, b: string = 'b', c?: string) {
+  console.log(a, b, c);
+}
+
+foo('1');           // outputs '1', 'b', undefined
+foo('1', 'a');      // outputs '1', 'a', undefined
+foo('1', 'a', '2'); // outputs '1', 'a', '2'
+</code></pre></p>
+
+            <p><small><a href="https://www.typescriptlang.org/docs/handbook/functions.html#optional-and-default-parameters">Functions, optional and default parameters</a></small></p>
+          </section>
+
+          <section>
+            <h4>safe navigation operator</h4>
+            <p><small>a.k.a. Elvis Operator</small></p>
+
+<p><pre><code class="typescript" data-trim>
+let foo = { bar: { value: 7 } };
+
+let seven   = foo?.bar?.value;
+let unknown = foo?.kaabow?.value;
+</code></pre></p>
+
+            <p class="fragment" data-fragment-index="1" style="color: orangered;">NOT SUPPORTED in TypeScript!</p>
+
+            <p class="fragment" data-fragment-index="1"><small><a href="https://github.com/Microsoft/TypeScript/issues/16">TypeScript #16</a></small></p>
+          </section>
+
+          <section>
             <h4>for .. of, for .. in</h4>
 
 <p><pre><code class="typescript" data-trim>
@@ -632,22 +689,6 @@ for (let value of list) {
           </section>
 
           <section>
-            <h4>optional and default parameters</h4>
-
-<p><pre><code class="typescript" data-trim>
-function foo(a: string, b: string = 'b', c?: string) {
-  console.log(a, b, c);
-}
-
-foo('1');           // outputs '1', 'b', undefined
-foo('1', 'a');      // outputs '1', 'a', undefined
-foo('1', 'a', '2'); // outputs '1', 'a', '2'
-</code></pre></p>
-
-            <p><small><a href="https://www.typescriptlang.org/docs/handbook/functions.html#optional-and-default-parameters">Functions, optional and default parameters</a></small></p>
-          </section>
-
-          <section>
             <h4>object literal property value shorthand</h4>
             <p>maps variable to property</p>
 
@@ -662,22 +703,6 @@ console.log(y); // outputs { foo: 'a', bar: 7 }
 </code></pre></p>
 
             <p><small><a href="https://github.com/Microsoft/TypeScript/issues/418">TypeScript #418</a></small></p>
-          </section>
-
-          <section>
-            <h4>template strings</h4>
-            <p><small>a.k.a: string interpolation, multi-line strings</small></p>
-
-<p><pre><code class="typescript" data-trim>
-let foo = 'fighters';
-console.log(`Foo ${foo}.`); // 'Foo fighters'
-
-let html = `&lt;p&gt;
-&lt;marquee&gt;There goes my hero&lt;/marquee&gt;
-&lt;/p&gt;`;
-</code></pre></p>
-
-<iframe class="fragment" src="https://embed.spotify.com/?uri=spotify%3Atrack%3A5oCMnpuRd3rUL9clNWbjr0" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
           </section>
 
           <section>
@@ -712,20 +737,20 @@ console.log(b); // outputs 12
           </section>
 
           <section>
-            <h4>safe navigation operator</h4>
-            <p><small>a.k.a. Elvis Operator</small></p>
+            <h4>template strings</h4>
+            <p><small>a.k.a: string interpolation, multi-line strings</small></p>
 
 <p><pre><code class="typescript" data-trim>
-let foo = { bar: { baz: '7' } };
+let foo = 'fighters';
+console.log(`Foo ${foo}.`); // 'Foo fighters'
 
-let bar = foo?.bar?.kaabow;
+let html = `&lt;p&gt;
+&lt;marquee&gt;There goes my hero&lt;/marquee&gt;
+&lt;/p&gt;`;
 </code></pre></p>
 
-            <p class="fragment" data-fragment-index="1" style="color: orangered;">NOT SUPPORTED in TypeScript!</p>
-
-            <p class="fragment" data-fragment-index="1"><small><a href="https://github.com/Microsoft/TypeScript/issues/16">TypeScript #16</a></small></p>
+<iframe class="fragment" src="https://embed.spotify.com/?uri=spotify%3Atrack%3A5oCMnpuRd3rUL9clNWbjr0" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
           </section>
-
         </section>
 
         <section data-background-image="https://placekitten.com/1980/1200">
@@ -748,10 +773,10 @@ let bar = foo?.bar?.kaabow;
 
 <p><pre><code class="typescript" data-trim>
 class Tiger {
-  color: string = 'striped';       // &lt;-- property (member)
-  private prey: any; // (prey bedeutet "Beute")
+  color: string = 'striped';     // &lt;-- property (member)
+  private prey: any;
 
-  public hunt(what: any): void {   // &lt;-- function (method)
+  public hunt(what: any): void { // &lt;-- function (method)
     this.prey = what;
   }
 }
@@ -770,6 +795,7 @@ var Tiger = (function () {
 </code></pre></p>
 
             <aside class="notes">
+              <p>(prey bedeutet "Beute")</p>
               <p>properties wie members, functions wie methoden</p>
               <p>access modifier: public, private, protected - public by default</p>
             </aside>
