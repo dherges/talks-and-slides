@@ -182,6 +182,177 @@
           </section>
         </section>
 
+        <section data-background-image="https://placekitten.com/g/1900/1280">
+        </section>
+
+        <section>
+          <section>
+            <h2>Functional programming</h2>
+          </section>
+
+          <section>
+            <h4>All the things!</h4>
+
+            <p><a href="http://slides.com/gsklee/functional-programming-in-5-minutes">Functional programming in 5 minutes</a>, G. Kay Lee</p>
+
+            <aside class="notes">
+              <p>Functional Programming ist ein umfangreiches Thema.</p>
+              <p>Hier Fokus auf zwei Aspekte:</p>
+              <ul>
+                <li>lambda expressions</li>
+                <li>scoping mit this, var, let, const</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h4>var, let, const</h4>
+
+            <small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html">Variable Declarations</a></small>
+          </section>
+
+          <section>
+            <h4>var</h4>
+
+<p><pre><code class="typescript" data-trim>
+var foo = 7;
+function () {
+  var foo = 'bar';
+}
+</code></pre></p>
+
+            <p>how many variables?</p>
+            <p class="fragment">2</p>
+          </section>
+
+          <section>
+            <h4>var</h4>
+
+<p><pre><code class="typescript" data-trim>
+var foo = 7;
+function () {
+  if (/* .. */) {
+    var foo = 'bar';
+  } else {
+    var foo = new Foo();
+  }
+}
+</code></pre></p>
+
+            <p>how many variables?</p>
+            <p class="fragment">in code: 3 &mdash; at run-time: 2</p>
+          </section>
+
+          <section>
+            <h4>let</h4>
+
+<p><pre><code class="typescript" data-trim>
+let foo = 7;
+function () {
+  if (/* .. */) {
+    let foo = 'bar';
+  } else {
+    let foo = new Foo();
+  }
+}
+</code></pre></p>
+
+            <p>how many variables?</p>
+            <p class="fragment">in code: 3 &mdash; at run-time: 3</p>
+          </section>
+
+          <section>
+            <h4>const</h4>
+
+<p><pre><code class="typescript" data-trim>
+const foo = 7;
+foo = 8; // Cannot assign to 'foo' because it is a constant.
+</code></pre></p>
+
+            <p>how many constants?</p>
+            <p class="fragment">in code: 1 &mdash; at run-time: 0</p>
+          </section>
+
+          <section>
+            <h4>Arrow Functions</h4>
+            <p><small>a.k.a lambda expressions</small></p>
+
+<p><pre><code class="typescript" data-trim>
+() => {
+  this.color = 'green';
+}
+</code></pre></p>
+
+<p class="fragment" data-fragment-index="1"><small>(transpiles to)</small></p>
+
+<p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1"><code class="typescript" data-trim>
+var _this = this;
+(function () {
+  _this.color = 'green';
+});
+</code></pre></p>
+          </section>
+
+          <section>
+            <h4>Arrow Functions</h4>
+
+<p><pre><code class="typescript" data-trim>
+class MyComponent {
+  color = '';
+
+  onButtonClicked() {
+    this.color = 'red';
+
+    this.http.get('/foo/bar').subscribe(
+      (response) => {
+        let json = response.json();
+        this.color = json.color; // &lt;-- var that = this,
+      }                          //        _that = this,
+    );                           //        _this = this
+
+  }
+}
+</code></pre></p>
+          </section>
+
+          <section>
+            <h4>Call Signatures</h4>
+            <p><small>(or: function types)</small></p>
+
+<p class="fragment" data-fragment-index="1"><pre class="fragment" data-fragment-index="1">
+<code class="typescript" data-trim>
+(response: Response): void
+</code></pre></p>
+
+<p class="fragment" data-fragment-index="2"><pre class="fragment" data-fragment-index="2">
+<code class="typescript" data-trim>
+(response: Response) => void
+</code></pre></p>
+
+<p class="fragment" data-fragment-index="3"><pre class="fragment" data-fragment-index="3">
+<code class="typescript" data-trim>
+subscribe: (/*..*/) => Subscription;
+</code></pre></p>
+
+<p class="fragment" data-fragment-index="4"><pre class="fragment" data-fragment-index="4">
+<code class="typescript" data-trim>
+subscribe: (
+  next: (response: Response) => void
+) => Subscription;
+</code></pre></p>
+
+            <aside class="notes">
+              <ol>
+                <li>Anonyme oder benamte Funktion</li>
+                <li>Benamte Funktion</li>
+                <li>Benamte Funktion</li>
+                <li>Benamte Funktion mit Parameter</li>
+              </ol>
+            </aside>
+          </section>
+
+        </section>
+
         <section data-background-image="https://placekitten.com/1900/1200">
         </section>
 
@@ -885,32 +1056,100 @@ class MyComponent {
 
           <section>
             <h4>import, export</h4>
+
+<p><pre><code class="typescript" data-trim>
+export class Foo {}
+</code></pre></p>
+<p><small>foo.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+import { Foo } from './foo';
+let foo = new Foo();
+</code></pre></p>
+<p><small>bar.ts</small></p>
+
+            <aside class="notes">
+              <p>Ein Modul pro *.ts Datei</p>
+              <p>export, import: um Abhängigkeiten zwischen Modulen zu deklarieren</p>
+              <p>Relative Pfadangaben mit './' oder '../'</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>import, export</h4>
+
+<p><pre><code class="typescript" data-trim>
+export class Foo {}
+</code></pre></p>
+<p><small>foo/foo-internal.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+export * from './foo-internal';
+</code></pre></p>
+<p><small>foo/index.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+import { Foo } from './foo';
+let foo = new Foo();
+</code></pre></p>
+<p><small>bar.ts</small></p>
+
+            <aside class="notes">
+              <p>'index.ts' exportiert ein Verzeichnis als Modul</p>
+              <p>wird auch genannt: "barrel" (Angular community)</p>
+            </aside>
+          </section>
+
+          <section>
+            <h4>import (legacy code)</h4>
+
+<p><pre><code class="typescript" data-trim>
+import 'ie-shim';
+</code></pre></p>
+<p><small>polyfills.ts</small></p>
+
+<p><pre><code class="typescript" data-trim>
+import * as moment from 'moment';
+
+moment.now();
+</code></pre></p>
+<p><small>time.ts</small></p>
+
+            <aside class="notes">
+              <p>Absolute Pfadangabe: löst an Hang "moduleResolution" des ts compilers auf, i.d.R. aus "node_modules" Verzeichnis</p>
+              <p><code>import 'lib'</code>: library "all-in"</p>
+              <p><code>import * as</code>: Syntax häufig für variable-scoped libraries (z.B. auch <code>$</code>)</p>
+            </aside>
           </section>
 
           <section>
             <h4>namespace</h4>
+
+<p><pre><code class="typescript" data-trim>
+declare namespace moment {
+  export function now(): number;
+}
+
+export = moment;
+</code></pre></p>
+<p><small>moment.d.ts</small></p>
+
+            <!--p class="fragment">&rArr; an object literal grouping common stuff together</p-->
+            <aside class="notes">
+              <p>object literal + iife = namespace</p>
+              <p>namespaces meistens für declaration files von legacy code</p>
+              <p>deklarieren einer "globalen" variable, die die library repräsentiert (z.B. auch <code>$</code>)</p>
+            </aside>
           </section>
         </section>
 
-        <section data-background-image="https://placekitten.com/g/1900/1280">
-        </section>
 
         <section>
           <section>
-            <h2>Functional programming</h2>
+            <h2>Tools and Ecosystem</h2>
 
-            <p>http://slides.com/gsklee/functional-programming-in-5-minutes, G. Kay Lee </a>
-          </section>
-
-          <section>
-            <h4>arrow functions</h4>
-            <p>this</p>
-          </section>
-
-          <section>
-            <h4>var, let, const</h4>
-
-            <small><a href="https://www.typescriptlang.org/docs/handbook/variable-declarations.html">https://www.typescriptlang.org/docs/handbook/variable-declarations.html</a></small>
+            <p>d.ts: declaration files</p>
+            <p>@types/&lt;lib&gt;</p>
           </section>
         </section>
 
@@ -991,7 +1230,7 @@ foo.multiply(2); // 8</pre>
 
           <section>
             <h4>ES 5 building blocks</h4>
-            <p>interrupts</p>
+            <p>exceptions (or: interrupts)</p>
 
             <p><code>
 <pre>try {
@@ -1005,11 +1244,11 @@ foo.multiply(2); // 8</pre>
 
         <section>
           <section>
-            <h4>More ES 5</h4>
-            <h6>for your self-study</h6>
+            <h4>ES 5 &mdash; functions everywhere</h4>
           </section>
 
           <section>
+            <h4>ES 5 &mdash; functions everywhere</h4>
             <p><code>
 <pre>var foo = function ()   { return 3; }
 var bar = function (cb) { return cb(); }
@@ -1021,6 +1260,7 @@ bar(foo()); // TypeError: cb is not a function</pre>
           </section>
 
           <section>
+            <h4>ES 5 &mdash; functions everywhere</h4>
             <p><code>
 <pre>function f(x, y) { return x * y; }
 
@@ -1036,6 +1276,7 @@ g(3)(2);  // 6</pre>
           </section>
 
           <section>
+            <h4>ES 5 &mdash; functions everywhere</h4>
             <p><code>
 <pre>var foo = function (x) { return x; }
 
@@ -1054,6 +1295,7 @@ foo([9, 8, 7]- 6);  // NaN (not a number)
           </section>
 
           <section>
+            <h4>ES 5 &mdash; functions everywhere</h4>
             <p><code>
 <pre>var Foo = function () { this.x = 3; }
 
@@ -1062,6 +1304,7 @@ var foo = new Foo();  // Foo { x: 3 }</pre>
           </section>
 
           <section>
+            <h4>ES 5 &mdash; functions everywhere</h4>
             <p><code>
 <pre>var Foo = function () { this.x = 3; }
 Foo.prototype.multiply = function (y) { return this.x * y; }
@@ -1076,8 +1319,8 @@ foo.multiply(2); // TypeError: foo.multiply is not a function</pre>
           </section>
 
           <section>
-            <p><code>
-<pre>var Foo = function (x) { this.x = x; }
+            <h4>ES 5 &mdash; functions everywhere</h4>
+<p><code><pre>var Foo = function (x) { this.x = x; }
 Foo.prototype.identity = function () {
   return this.x ;
 }
@@ -1089,19 +1332,9 @@ foo.identity();            // 3
 bar(foo.identity);         // undefined
 
 bar(function () { return foo.identity(); })   // 3
-</pre>
-            </code></p>
+</pre></code></p>
           </section>
 
-          <section>
-            <p><code>
-<pre>try {
-  throw 'hello'
-} catch (e) {
-  console.log(e); // 'hello'
-}</pre>
-            </code></p>
-          </section>
         </section>
 
 
